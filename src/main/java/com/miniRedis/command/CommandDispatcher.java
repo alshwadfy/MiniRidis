@@ -17,6 +17,8 @@ public class CommandDispatcher {
         register("DEL", new DelCommand());
         register("EXISTS", new ExistsCommand());
         register("PING", new PingCommand());
+        register("INCR", new IncrCommand());
+        
     }
 
     public void register(String name, Command command) {
@@ -38,4 +40,6 @@ public class CommandDispatcher {
         List<String> args=tokens.subList(1, tokens.size());
         return command.execute(args, store);
     }
+
+ 
 }
