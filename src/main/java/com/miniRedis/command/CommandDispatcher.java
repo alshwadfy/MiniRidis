@@ -18,6 +18,8 @@ public class CommandDispatcher {
         register("EXISTS", new ExistsCommand());
         register("PING", new PingCommand());
         register("INCR", new IncrCommand());
+        register("EXPIRE",new ExpireCommand());
+        register("TTL",new TtlCommand());
         
     }
 

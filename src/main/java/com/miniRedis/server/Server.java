@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.miniRedis.command.CommandDispatcher;
-
+import com.miniRedis.store.ExpirySweeper;
 import com.miniRedis.store.Store;
 
 public class Server {
@@ -19,6 +19,8 @@ public class Server {
     }
 
     public void start() throws IOException {
+        ExpirySweeper expirySweeper = new ExpirySweeper(store, 1);
+        expirySweeper.start();
         while (true) {
             Socket socket = server.accept();
             ClientHandler clientHandler = new ClientHandler(socket, store, commandDispatcher);
