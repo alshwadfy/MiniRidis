@@ -2,6 +2,7 @@ package com.miniRedis.persistence;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,33 +21,32 @@ public class AofReplayer {
         
 
      }
+public void replay(Store store) throws IOException {
+    File file = new File(path);
+    if (!file.exists()) {
+        return;
+    }
 
-    public void replay(Store store) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(path));
+    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
         String line;
-
         while ((line = reader.readLine()) != null) {
-            
-            if (!line.startsWith("*")) continue; 
-    
-            int tokenCount = Integer.parseInt(line.substring(1)); 
-    
+            if (!line.startsWith("*")) continue;
+
+            int tokenCount = Integer.parseInt(line.substring(1));
             List<String> tokens = new ArrayList<>();
-    
+
             for (int i = 0; i < tokenCount; i++) {
                 String lengthLine = reader.readLine(); // "$3"
                 String token = reader.readLine();      // "SET"
-                tokens.add(token);
-    }
-    
-    dispatcher.dispatch(tokens, store);
+                if (token != null) {
+                    tokens.add(token);
+                }
+            }
+
+            if (!tokens.isEmpty()) {
+                dispatcher.dispatch(tokens, store);
+            }
         }
-
     }
-
-
-
-
-
-    }  
-
+}
+    }

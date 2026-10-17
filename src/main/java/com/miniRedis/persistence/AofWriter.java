@@ -18,7 +18,7 @@ public class AofWriter {
             )
         );
     }
-  public void append(List<String> tokens) {
+  public synchronized void append(List<String> tokens) {
     try {
         StringBuilder sb = new StringBuilder();
         sb.append("*").append(tokens.size()).append("\r\n");
